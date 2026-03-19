@@ -18,6 +18,13 @@ export function EquipmentBrowser() {
   // Per-item qty inputs (default 1)
   const [itemQty, setItemQty] = useState<Record<string, number>>({});
 
+  // Toast confirmation
+  const [toast, setToast] = useState<string | null>(null);
+  function showToast(msg: string) {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2000);
+  }
+
   // Multi-select mode
   const [selectMode, setSelectMode] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -28,7 +35,10 @@ export function EquipmentBrowser() {
   function setQty(id: string, q: number) { setItemQty(prev => ({ ...prev, [id]: Math.max(1, q) })); }
 
   function addToBuild(equipmentId: string) {
-    dispatch({ type: 'ADD_LINE_ITEM', payload: { equipmentId, circuitId: targetCircuit, quantity: getQty(equipmentId) } });
+    const eq = filtered.find(e => e.id === equipmentId);
+    const qty = getQty(equipmentId);
+    dispatch({ type: 'ADD_LINE_ITEM', payload: { equipmentId, circuitId: targetCircuit, quantity: qty } });
+    showToast(`✓ ${qty > 1 ? `${qty}× ` : ''}${eq?.name ?? 'Item'} added to build`);
   }
 
   function toggleSelected(id: string) {
@@ -45,6 +55,7 @@ export function EquipmentBrowser() {
       type: 'ADD_LINE_ITEMS_BULK',
       payload: Array.from(selected).map(id => ({ equipmentId: id, circuitId: targetCircuit, quantity: getQty(id) })),
     });
+    showToast(`✓ ${selected.size} item${selected.size !== 1 ? 's' : ''} added to build`);
     setSelected(new Set());
     setSelectMode(false);
   }
@@ -236,6 +247,13 @@ export function EquipmentBrowser() {
       </div>
 
       <AddCustomEquipment open={showAdd} onClose={() => setShowAdd(false)} />
+
+      {/* Toast confirmation */}
+      {toast && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-lg bg-emerald-700 text-white text-sm font-medium shadow-lg flex items-center gap-2 whitespace-nowrap md:hidden animate-fade-in">
+          {toast}
+        </div>
+      )}
     </div>
   );
 }

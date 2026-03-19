@@ -90,25 +90,35 @@ function AppContent() {
 
       {/* Mobile bottom tab bar — hidden on md+ */}
       <nav className="md:hidden flex border-t border-gray-800 bg-gray-900 shrink-0">
-        {([
-          { id: 'equipment', label: 'Equipment', icon: '⊞', mode: 'power' as AppMode },
-          { id: 'build',     label: 'Build',     icon: '⚡', mode: 'power' as AppMode },
-          { id: 'dashboard', label: 'Dashboard',  icon: '◉', mode: 'power' as AppMode },
-          { id: 'sound',     label: 'Sound',      icon: '🔊', mode: 'sound' as AppMode },
-        ] as { id: MobileTab; label: string; icon: string; mode: AppMode }[]).map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => { setMobileTab(tab.id); setAppMode(tab.mode); }}
-            className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 text-xs transition-colors ${
-              mobileTab === tab.id
-                ? 'text-amber-400 border-t-2 border-amber-400 -mt-px'
-                : 'text-gray-500 hover:text-gray-300'
-            }`}
-          >
-            <span className="text-base leading-none">{tab.icon}</span>
-            <span>{tab.label}</span>
-          </button>
-        ))}
+        {(() => {
+          const totalItems = build.lineItems.length;
+          return ([
+            { id: 'equipment', label: 'Equipment', icon: '⊞', mode: 'power' as AppMode },
+            { id: 'build',     label: 'Build',     icon: '⚡', mode: 'power' as AppMode, badge: totalItems > 0 ? totalItems : undefined },
+            { id: 'dashboard', label: 'Dashboard', icon: '◉', mode: 'power' as AppMode },
+            { id: 'sound',     label: 'Sound',     icon: '🔊', mode: 'sound' as AppMode },
+          ] as { id: MobileTab; label: string; icon: string; mode: AppMode; badge?: number }[]).map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => { setMobileTab(tab.id); setAppMode(tab.mode); }}
+              className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 text-xs transition-colors relative ${
+                mobileTab === tab.id
+                  ? 'text-amber-400 border-t-2 border-amber-400 -mt-px'
+                  : 'text-gray-500 hover:text-gray-300'
+              }`}
+            >
+              <span className="text-base leading-none relative">
+                {tab.icon}
+                {tab.badge !== undefined && (
+                  <span className="absolute -top-1.5 -right-2.5 min-w-[16px] h-4 px-0.5 rounded-full bg-amber-500 text-gray-950 text-[10px] font-bold flex items-center justify-center leading-none">
+                    {tab.badge > 99 ? '99+' : tab.badge}
+                  </span>
+                )}
+              </span>
+              <span>{tab.label}</span>
+            </button>
+          ));
+        })()}
       </nav>
 
       {/* Hidden print view for PDF export */}
