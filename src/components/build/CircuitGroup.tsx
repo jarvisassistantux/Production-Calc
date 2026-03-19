@@ -4,7 +4,6 @@ import { useBuild } from '../../context/BuildContext';
 import { UtilizationBar } from '../shared/UtilizationBar';
 import { BuildLineItem } from './BuildLineItem';
 import { fmtWatts, fmtAmps } from '../../utils/format';
-import { utilizationColor } from '../../utils/power';
 
 interface Props {
   summary: CircuitPowerSummary;

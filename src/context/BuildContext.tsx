@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
-import type { Build, BuildLineItem, Circuit, EquipmentItem, Department } from '../types';
+import type { Build, Circuit, EquipmentItem, Department } from '../types';
 import { generateId } from '../utils/format';
 
 const STORAGE_KEY = 'powercalc-current-build';
