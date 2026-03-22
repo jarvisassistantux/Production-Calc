@@ -20,7 +20,7 @@ function AppContent() {
       {/* Header */}
       <header className="flex items-center justify-between px-3 md:px-4 py-2 bg-gray-900 border-b border-gray-800 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="text-amber-400 text-lg shrink-0">&#9889;</span>
+          <span className="text-purple-400 text-lg shrink-0">&#9889;</span>
           <h1 className="text-base font-bold text-gray-100 tracking-tight shrink-0 hidden sm:block">PowerCalc</h1>
           <span className="text-gray-600 hidden sm:block">|</span>
           <input
